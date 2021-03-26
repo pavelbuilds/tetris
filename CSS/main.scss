@@ -1,6 +1,14 @@
+$off-white: rgb(220, 220, 220);
+
 * {
    font-family: 'Press Start 2P', cursive;
+   color: $off-white;
  }
+
+body {
+   height: 100 vh;
+   background-color: #1C1E3F;
+}
  
  .grid {
    display: grid;
@@ -19,14 +27,16 @@
  }
  
  .game-board {
-   border: solid 2px;
- }
+   border: solid 10px rgb(41, 44, 103);
+}
  
  .play-button {
-   background-color: #4caf50;
+   background-color: rgb(41, 44, 103);
    font-size: 16px;
-   padding: 15px 30px;
+   padding: 20px 40px;
    cursor: pointer;
+   border: solid 5px $off-white;
+   border-radius: 10px; 
  }
  
  #pause-btn {

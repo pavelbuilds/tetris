@@ -21,14 +21,20 @@ const ROTATION = {
  };
 
  const COLORS = [  
-   'cyan',
-   'blue',
-   'orange',
-   'yellow',
-   'green',
-   'purple',
-   'red'
+   ['#55A241','#3C722D','#4D923A'],
+   ['#434C9E','#2F356F','#3D468F'],
+   ['#AA383E','#78272C','#9A3339'],
+   ['#CCA828','#917819','#BA9823'],
+   ['#B6562F','#7F3D20','#A34E2A'],
+   ['#913DAA','#672A7A','#85389C'],
+   ['#4BAFA2','#357E74','#459F94']
  ];
+
+ const BOARDCOLOR =  [
+    '#1C1E3F',
+    '#111229',
+    '#191A38'
+ ]
 
  const SHAPES = [
    [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
@@ -74,8 +80,19 @@ const POINTS = {
    18: 50,
    19: 30,
    20: 30,
-   // 29+ is 20ms
  };
 
  const LINES_PER_LEVEL = 10;
+
+ const SOUNDS = {
+    ROTATE: new Audio('sounds/rotate.mp3'),
+    LAND: new Audio('sounds/land.mp3'),
+    MOVE: new Audio ('sounds/move.mp3'),
+    LEVEL: new Audio ('sounds/level.mp3'),
+    TETRIS: new Audio ('sounds/tetris.mp3'),
+    LINE: new Audio ('sounds/line.mp3'),
+    SHIFT: new Audio ('sounds/shift.mp3'),
+    GAMEOVER: new Audio ('sounds/gameover.mp3'),
+    THEME: new Audio ('sounds/theme_song.mp3')
+   }
 

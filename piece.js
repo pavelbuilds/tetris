@@ -5,20 +5,37 @@ class Piece {
    }
 
    spawn() {
-      this.typeId = this.randomizeTetrominoType(COLORS.length - 1);
+      this.typeId = this.randomizeTetrominoType(COLORS.length);
       this.shape = SHAPES[this.typeId];
       this.color = COLORS[this.typeId];
       this.x = 0;
       this.y = 0;
-      this.hardDropped = false;
     }
 
    draw(){
-      this.ctx.fillStyle = this.color;
+      
       this.shape.forEach((rows,y) => {
          rows.forEach((value, x) => {
             if (value > 0) {
-               this.ctx.fillRect(this.x + x, this.y + y, 1, 1);
+
+               this.ctx.beginPath();
+               this.ctx.moveTo(this.x + x, this.y + y);
+               this.ctx.lineTo(this.x + x + 1.01, this.y + y);
+               this.ctx.lineTo(this.x + x, this.y + y + 1);
+               this.ctx.lineTo(this.x + x, this.y + y);
+               this.ctx.fillStyle = this.color[0];
+               this.ctx.fill();
+
+               this.ctx.beginPath();
+               this.ctx.moveTo(this.x + x + 1,this.y + y);
+               this.ctx.lineTo(this.x + x + 1, this.y + y + 1);
+               this.ctx.lineTo(this.x + x - 0.01, this.y + y + 1);
+               this.ctx.lineTo(this.x + x + 1,this.y + y);
+               this.ctx.fillStyle = this.color[1];
+               this.ctx.fill();
+
+               this.ctx.fillStyle = this.color[2];
+               this.ctx.fillRect(this.x + x + 0.15, this.y + y + 0.15, 0.7, 0.7);
             }
          });
       });
@@ -35,6 +52,7 @@ class Piece {
     }
 
    setStartingPosition() {
+      // Setting the x-starting coordinate based on tetrominoe width
       this.x = this.typeId === 4 ? 4 : 3;
    }
 }
