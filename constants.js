@@ -2,8 +2,10 @@
 
 const COLS = 10;
 const ROWS = 20;
-const BLOCK_SIZE = 30;
+const BLOCK_SIZE_SINGLE = 30;
+const BLOCK_SIZE_MULTI = 22;
 
+// single player keys
 const KEY = {
    LEFT: 37,
    RIGHT: 39,
@@ -12,8 +14,24 @@ const KEY = {
    UP: 38,
    Q: 81
 }
-
 Object.freeze(KEY);
+
+// multi player keys
+const KEY_MP = {
+   LEFT_PL1: 65,
+   RIGHT_PL1: 68,
+   DOWN_PL1: 83,
+   SPACE_PL1: 69,
+   UP_PL1: 87,
+   Q: 81,
+   LEFT_PL2: 37,
+   RIGHT_PL2: 39,
+   DOWN_PL2: 40,
+   SPACE_PL2: 32,
+   UP_PL2: 38,
+   Q: 81
+}
+Object.freeze(KEY_MP);
 
 const ROTATION = {
    LEFT: 'left',
@@ -39,9 +57,9 @@ const ROTATION = {
  const SHAPES = [
    [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
    [[2, 0, 0], [2, 2, 2], [0, 0, 0]],
-   [[0, 0, 3], // 0,0 -> 2,0 ; 0,1 -> 1,0 ; 0,2 -> 0,0
-    [3, 3, 3], // 1,0 -> 2,1 ; 1,1 -> 1,1 ; 1,2 -> 0,1 
-    [0, 0, 0]],// 2,0 -> 2,2 ; 2,1 -> 1,2 ; 2,2 -> 0,2
+   [[0, 0, 3], 
+    [3, 3, 3],  
+    [0, 0, 0]],
    [[4, 4], [4, 4]],
    [[0, 5, 5], [5, 5, 0], [0, 0, 0]],
    [[0, 6, 0], [6, 6, 6], [0, 0, 0]],

@@ -5,7 +5,7 @@ class Piece {
    }
 
    spawn() {
-      this.typeId = this.randomizeTetrominoType(COLORS.length);
+      this.typeId = this.randomizeTetrominoType(SHAPES.length - 1);
       this.shape = SHAPES[this.typeId];
       this.color = COLORS[this.typeId];
       this.x = 0;
@@ -13,7 +13,6 @@ class Piece {
     }
 
    draw(){
-      
       this.shape.forEach((rows,y) => {
          rows.forEach((value, x) => {
             if (value > 0) {

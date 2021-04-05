@@ -6,6 +6,78 @@
 body {
   height: 100 vh;
   background-color: #1C1E3F;
+  margin: 0;
+}
+
+.game-board {
+  border: solid 10px #292c67;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#sound-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 10px;
+}
+
+.sound-icon {
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+}
+
+.sound-setting {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.sound-setting:hover {
+  opacity: 1;
+}
+
+#menu-heading {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.flex-container {
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.mode-button {
+  background-color: #292c67;
+  font-size: 1em;
+  padding: 20px 40px;
+  cursor: pointer;
+  border: solid 5px gainsboro;
+  border-radius: 10px;
+  -webkit-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
+  margin-right: 50px;
+  margin-left: 50px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.mode-button:hover {
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+  color: #292c67;
+  background-color: gainsboro;
 }
 
 .grid {
@@ -15,8 +87,9 @@ body {
       grid-template-columns: 1fr 1fr;
   position: absolute;
   left: 50%;
-  -webkit-transform: translate(-50%, 0);
-          transform: translate(-50%, 0);
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 
 .right-column {
@@ -34,28 +107,136 @@ body {
           justify-content: space-between;
 }
 
-.game-board {
-  border: solid 10px #292c67;
-}
-
-.play-button {
+.play-button-single {
   background-color: #292c67;
-  font-size: 16px;
+  font-size: 1em;
   padding: 20px 40px;
   cursor: pointer;
   border: solid 5px gainsboro;
   border-radius: 10px;
+  -webkit-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
 }
 
-#pause-btn {
-  display: none;
+.play-button-single:hover {
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+  color: #292c67;
+  background-color: gainsboro;
 }
 
-#sound-speaker {
-  font-size: 30px;
+.players-name {
+  font-size: 1.25em;
+  text-align: center;
+  opacity: 0.5;
+  line-height: 2em;
 }
 
-.sound-item {
+.edited-name {
+  font-size: 2em;
+  text-align: center;
+  opacity: 1;
+}
+
+.multi-player-grid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.multi-player-column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 300px;
+}
+
+#middle-column-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#canvas-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.play-button-multi {
+  background-color: #292c67;
+  font-size: 1em;
+  padding: 20px 40px;
   cursor: pointer;
+  border: solid 5px gainsboro;
+  border-radius: 10px;
+  -webkit-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
+  width: 50%;
+  margin-top: 20px;
+  padding: 10px 20px;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+
+.play-button-multi:hover {
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+  color: #292c67;
+  background-color: gainsboro;
+}
+
+.play-button-multi:disabled {
+  opacity: 0.4;
+  -webkit-transform: scale(0.85);
+          transform: scale(0.85);
+  cursor: default;
+}
+
+.play-button-multi:disabled:hover {
+  background-color: #292c67;
+  color: gainsboro;
+}
+
+.winner {
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-size: 6em;
+  z-index: 5;
+  line-height: 1.5em;
 }
 /*# sourceMappingURL=main.css.map */

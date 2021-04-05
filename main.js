@@ -7,19 +7,21 @@ const canvasNext = document.getElementById('next');
 const ctxNext = canvasNext.getContext('2d');
 
 // Calculate size of canvas from constants.
-ctx.canvas.width = COLS * BLOCK_SIZE;
-ctx.canvas.height = ROWS * BLOCK_SIZE;
+ctx.canvas.width = COLS * BLOCK_SIZE_SINGLE;
+ctx.canvas.height = ROWS * BLOCK_SIZE_SINGLE;
 
-ctxNext.canvas.width = 4 * BLOCK_SIZE;
-ctxNext.canvas.height = 4 * BLOCK_SIZE;
+ctxNext.canvas.width = 4 * BLOCK_SIZE_SINGLE;
+ctxNext.canvas.height = 4 * BLOCK_SIZE_SINGLE;
 
 // Scale blocks
-ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
-ctxNext.scale(BLOCK_SIZE, BLOCK_SIZE);
+ctx.scale(BLOCK_SIZE_SINGLE, BLOCK_SIZE_SINGLE);
+ctxNext.scale(BLOCK_SIZE_SINGLE, BLOCK_SIZE_SINGLE);
 
 let board = new Board(ctx, ctxNext);
 
 board.grid = board.getEmptyBoard();
+
+// Empty board gets painted with boxes
 board.grid.forEach((row, y) => {
    row.forEach((value, x) => {
      if (value == 0) {
@@ -28,7 +30,7 @@ board.grid.forEach((row, y) => {
    });
  });
 
-// Starts new game - is exicuted when clicking the id="play-btn" button
+// Starts new game - is executed when clicking the id="play-btn-single" button
 function play() {
    ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
    resetGame();
@@ -39,7 +41,7 @@ function play() {
    SOUNDS.THEME.loop = true;
 }
 
-// Resets game parameters as score, lines level, lines untill nex level; creates a new board matrix filled with zeros; resets animation time parameter
+// Resets game parameters as score, lines level, lines until next level; creates a new board matrix filled with zeros; resets animation time parameter
 function resetGame() {
    account.score = 0;
    account.lines = 0;
@@ -62,6 +64,42 @@ const moves = {
 // Event listener watches the keydown event for the defined keys in the KEY object in constants.js
 document.addEventListener('keydown', handleKeyDown);
 
+function handleKeyDown (event) {
+   if (moves[event.keyCode]){
+      // Stop the event from bubbling.
+      event.preventDefault();
+
+      // Get new state of piece
+      let p = moves[event.keyCode](board.piece);
+
+      // Hard drop
+      if(event.keyCode === KEY.SPACE) {
+         while(board.valid(p)) {
+            account.score += POINTS.HARD_DROP;
+            board.piece.move(p);
+            p = moves[KEY.DOWN](board.piece);
+         }
+         // Prevents further movement of the Tetrominoe
+         board.hardDrop = true;
+         board.freeze();
+      }
+      // Checking if the move is valid
+      if(board.valid(p)){
+         //If the move is valid, move the piece.
+         board.piece.move(p);
+         SOUNDS.MOVE.load();
+         SOUNDS.MOVE.play();
+
+         if(event.keyCode === KEY.DOWN){
+            account.score += POINTS.SOFT_DROP;
+         }
+      }
+      ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
+      board.draw();
+   }
+}
+
+//Declaring Game Loop Variables
 let time = null;
 let blinkTime = null;
 let blinkPeriode;
@@ -115,7 +153,6 @@ function animate(now = 0) {
    }
  }
 
-
 function animateRowBlinking (now) {
    // Update elapsed time.  
    blinkTime.elapsed = now - blinkTime.start;
@@ -143,7 +180,7 @@ function animateRowBlinking (now) {
          colored = true;
       }
    } 
-   // Stopping blinking animtaion when
+   // Stopping blinking animation
    if(blinkCall > 120){
       board.yDelete.forEach(y => {
          board.grid[y].forEach((value, x) =>{
@@ -164,28 +201,28 @@ function animateRowBlinking (now) {
    requestAnimationFrame(animateRowBlinking);
 }
 
- let accountValues = {
+let accountValues = {
    score: 0,
    lines: 0,
    level: 0,
    nextLevel: level + 1,
    linesNextLevel: 10,
- }
+}
 
- function updateAccount(key, value) {
-   let element = document.getElementById(key);
-   if (element) {
-     element.textContent = value;
-   }
- }
-
- let account = new Proxy(accountValues, {
+let account = new Proxy(accountValues, {
    set: (target, key, value) => {
      target[key] = value;
      updateAccount(key, value);
      return true;
    }
- })
+})
+
+function updateAccount(key, value) {
+   let element = document.getElementById(key);
+   if (element) {
+     element.textContent = value;
+   }
+ }
 
 function gameOver() {
    SOUNDS.GAMEOVER.play();
@@ -195,40 +232,18 @@ function gameOver() {
    ctx.font = '1px Arial';
    ctx.fillStyle = 'red';
    ctx.fillText('GAME OVER', 1.8, 4);
- }
+}
 
+let music_button = document.querySelector("#music");
 
- function handleKeyDown (event) {
-   if (moves[event.keyCode]){
-      // Stop the event from bubbling.
-      event.preventDefault();
-
-      // Get new state of piece
-      let p = moves[event.keyCode](board.piece);
-
-      // Hard drop
-      if(event.keyCode === KEY.SPACE) {
-         while(board.valid(p)) {
-            account.score += POINTS.HARD_DROP;
-            board.piece.move(p);
-            p = moves[KEY.DOWN](board.piece);
-         }
-         // Prevents further movement of the Tetrominoe
-         board.hardDrop = true;
-         board.freeze();
-      }
-      // Checking if the move is valid
-      if(board.valid(p)){
-         //If the move is valid, move the piece.
-         board.piece.move(p);
-         SOUNDS.MOVE.load();
-         SOUNDS.MOVE.play();
-
-         if(event.keyCode === KEY.DOWN){
-            account.score += POINTS.SOFT_DROP;
-         }
-      }
-      ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
-      board.draw();
+// Switching on and off the music when clicking #music element 
+function switchMusic() {
+   if(SOUNDS.THEME.paused){
+      SOUNDS.THEME.play();
+      music_button.innerText = "music on";
+   } 
+   else {
+      SOUNDS.THEME.pause();
+      music_button.innerText = "music off";
    }
 }

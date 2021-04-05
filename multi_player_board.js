@@ -1,3 +1,5 @@
+// Creating a board class with COLS * ROWS cells all set to 0
+
 class Board {
 
    constructor(ctx, ctxNext) {
@@ -7,12 +9,13 @@ class Board {
    }
   
    init() {
+
       // Calculate size of canvas from constants.
-      this.ctx.canvas.width = COLS * BLOCK_SIZE_SINGLE;
-      this.ctx.canvas.height = ROWS * BLOCK_SIZE_SINGLE;
+      this.ctx.canvas.width = COLS * BLOCK_SIZE_MULTI;
+      this.ctx.canvas.height = ROWS * BLOCK_SIZE_MULTI;
 
       // Scale so we don't need to give size on every draw.
-      this.ctx.scale(BLOCK_SIZE_SINGLE, BLOCK_SIZE_SINGLE);
+      this.ctx.scale(BLOCK_SIZE_MULTI, BLOCK_SIZE_MULTI);
    }
 
    // Reset the board when we start the game
@@ -40,7 +43,7 @@ class Board {
       this.next.draw();
    }
    
-   // Checking if moving the Tetrominoe is a valid move - checking if it's inside the play board and if all fields are free
+   // Checking if moving the Tetrominoe is a valid move - checking for if it's inside the play board and if all fields are free
    valid(p) {
       return p.shape.every((row, dy) => {
          return row.every((value, dx) => {
@@ -72,7 +75,7 @@ class Board {
             }
          }
       p.shape.forEach(row => row.reverse());
-      // Play rotation sound
+
       SOUNDS.ROTATE.load();
       SOUNDS.ROTATE.play();
       return p;
@@ -90,9 +93,7 @@ class Board {
       });
    }
 
-
    drop() {
-      console.log("called");
       let p = moves[KEY.DOWN](this.piece);
       if (this.valid(p)) {
          this.piece.move(p);
@@ -126,7 +127,6 @@ class Board {
    clearLines() {
       // Counter for the number of lines that are getting cleared
       this.lines = 0;
-
       // Y coordinate array for the lines that are cleared
       this.yDelete = [];
 
@@ -143,23 +143,21 @@ class Board {
         if(this.lines === 4){
            SOUNDS.TETRIS.play();
         }
-        account.score += this.getLinesClearPoints(this.lines) * (account.level + 1)
-        account.lines += this.lines;
-        account.linesNextLevel -= this.lines;
+        //`score_pl${this.id}` syntax picks the score key of the player which the board belongs to - either sore_pl1 or score_pl2 depending on what this.id is set to. Same with lines_pl and level_pl
+        this.account[`score_pl${this.id}`] += this.getLinesClearPoints(this.lines) * (this.account[`level_pl${this.id}`] + 1)
+        this.account[`lines_pl${this.id}`] += this.lines;
   
         // If we have reached the lines for next level
-        if (account.lines >= LINES_PER_LEVEL) {
+        if (this.account[`lines_pl${this.id}`] >= LINES_PER_LEVEL) {
           // Goto next level
           SOUNDS.LEVEL.play();
-          account.level++;
-          account.nextLevel++;
+          this.account[`level_pl${this.id}`]++;
   
           // Remove lines so we start working for the next level
-          account.lines -= LINES_PER_LEVEL;
-          account.linesNextLevel = 10;
+          this.account[`lines_pl${this.id}`] -= LINES_PER_LEVEL;
   
           // Increase speed of game
-          time.level = LEVEL[account.level];
+          time[this.id - 1].level = LEVEL[this.account[`level_pl${this.id}`]];
  
         }
       //Return value for drop() method - true if there were any line cleared, otherwise false
@@ -186,13 +184,13 @@ class Board {
            }
          });
        });
-      this.piece.draw();
+
+       this.piece.draw();
       this.drawBoard();
     }
 
    // Return the point value for the number of cleared lines
    getLinesClearPoints(lines) {  
-
       return lines === 1 ? POINTS.SINGLE :
             lines === 2 ? POINTS.DOUBLE :  
             lines === 3 ? POINTS.TRIPLE :     

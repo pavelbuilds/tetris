@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Tetris | Multi Player</title>
+   <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" />
+   <link rel="stylesheet" href="CSS/main.css">
+</head>
+<body>
+
+   <div class="multi-player-grid">
+      <div class="multi-player-column">
+         <h1 contenteditable="" class="players-name">type your name here to start</h1>
+         <p>Score: <span id="score_pl1">0</span></p>
+         <p>Lines: <span id="lines_pl1">0</span></p>
+         <p>Level: <span id="level_pl1">0</span></p>
+         <canvas id="next_pl1" class="next"></canvas>
+      </div>
+      <div id="middle-column-container">
+         <div id="canvas-container">     
+            <canvas id="board_pl1" class="game-board"></canvas>
+            <canvas id="board_pl2" class="game-board"></canvas>
+         </div>
+         <button id="play-btn" class="play-button-multi" disabled>Play</button>
+         <div id="sound-container">
+               <img class="sound-icon" src="sound_icon.png" alt="">
+               <div>
+                  <p id="music" onclick="switchMusic()" class="sound-setting">music on</p>
+               </div>
+         </div>
+      </div>
+      <div class="multi-player-column">   
+         <h1 contenteditable="" class="players-name">type your name here to start</h1>
+         <p>Score: <span id="score_pl2">0</span></p>
+         <p>Lines: <span id="lines_pl2">0</span></p>
+         <p>Level: <span id="level_pl2">0</span></p>
+         <canvas id="next_pl2" class="next"></canvas>
+      </div>
+   </div>
+
+   <div class="winner"></div>
+
+
+   <script src="confetti.js"></script>
+   <script src="constants.js"></script>
+   <script src="multi_player_board.js"></script>
+   <script src="piece.js"></script>
+   <script src="multi_player_main.js"></script>
+
+</body>
+</html>
