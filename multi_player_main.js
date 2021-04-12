@@ -57,8 +57,32 @@ board.forEach((board) => {
     });
 })
 
+// Drawing navigation instructions on board
+// player 1
+drawNavigations(ctx[0], "a", "d", "w", "s", "e");
+drawNavigations(ctx[1], "left", "right", "up", "down", "space");
+
+//player 2
+
+
+function drawNavigations(ctx, left, right, rotate, softDrop, hardDrop){
+   ctx.font = '1px Tahoma';
+   ctx.fillStyle = 'white';
+   ctx.fillText('Navigations:', .8, 6);
+   ctx.fillText(`left: "${left}"`, .8, 8);
+   ctx.fillText(`right: "${right}"`, .8, 9.5);
+   ctx.fillText(`rotate: "${rotate}"`, .8, 11);
+   ctx.fillText(`soft drop: "${softDrop}"`, .8, 12.5);
+   ctx.fillText(`hard drop: "${hardDrop}"`, .8, 14);
+}
+
+// ctx[0].font = '1px Arial';
+// ctx[0].fillStyle = 'white';
+// ctx[0].fillText('left: "a", right: "d", rotate: "w", soft drop: "s", hard drop: "e"', 1.8, 4);
+
 // Starts new game
 let playBtn = document.querySelector("#play-btn");
+let music_button = document.querySelector("#music");
 
 playBtn.addEventListener('click', function () {
    // Reset text inside winners div, in case it's not the first game + stop confetti
@@ -81,12 +105,26 @@ playBtn.addEventListener('click', function () {
    animate(0, 1);
 
    //Play the theme song in a loop 
-   SOUNDS.THEME.load();
-   SOUNDS.THEME.play();
-   SOUNDS.THEME.loop = true;
+   if(music_button.innerText === "music on") {
+      SOUNDS.THEME.load();
+      SOUNDS.THEME.play();
+      SOUNDS.THEME.loop = true;
+   }
 })
 
-// Resets game parameters as score, lines level, lines untill nex level; creates a new board matrix filled with zeros; resets animation time parameter
+// Switching on and off the music when clicking #music element 
+function switchMusic() {
+   if(SOUNDS.THEME.paused){
+      SOUNDS.THEME.play();
+      music_button.innerText = "music on";
+   } 
+   else {
+      SOUNDS.THEME.pause();
+      music_button.innerText = "music off";
+   }
+}
+
+// Resets game parameters as score, lines level, lines until next level; creates a new board matrix filled with zeros; resets animation time parameter
 let time = null;
 function resetGame() {
    board[0].account.score_pl1 = 0;
@@ -150,7 +188,7 @@ const moves = {
    [KEY_MP.UP_PL2]: (p) => board[1].rotate(p)
 }
 
-// Event listener function for the defined keys in the KEY object in constants.js
+// Event listener function for the defined navigation keys in the KEY object in constants.js
 function handleKeyDown (event) {
    if (moves[event.keyCode]){
       // Stop the event from bubbling.
@@ -328,20 +366,6 @@ names.forEach(name => {
       }
    })
 })
-
-let music_button = document.querySelector("#music");
-
-// Switching on and off the music when clicking #music element 
-function switchMusic() {
-   if(SOUNDS.THEME.paused){
-      SOUNDS.THEME.play();
-      music_button.innerText = "music on";
-   } 
-   else {
-      SOUNDS.THEME.pause();
-      music_button.innerText = "music off";
-   }
-}
 
 
 

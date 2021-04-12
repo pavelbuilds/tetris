@@ -30,6 +30,20 @@ board.grid.forEach((row, y) => {
    });
  });
 
+drawNavigations(ctx, "left", "right", "up", "down", "space");
+
+
+ function drawNavigations(ctx, left, right, rotate, softDrop, hardDrop){
+   ctx.font = '1px Tahoma';
+   ctx.fillStyle = 'white';
+   ctx.fillText('Navigations:', .8, 6);
+   ctx.fillText(`left: "${left}"`, .8, 8);
+   ctx.fillText(`right: "${right}"`, .8, 9.5);
+   ctx.fillText(`rotate: "${rotate}"`, .8, 11);
+   ctx.fillText(`soft drop: "${softDrop}"`, .8, 12.5);
+   ctx.fillText(`hard drop: "${hardDrop}"`, .8, 14);
+}
+
 // Starts new game - is executed when clicking the id="play-btn-single" button
 function play() {
    ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
