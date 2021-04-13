@@ -1,4 +1,4 @@
-// Player 1 canvas set-up
+// Setting up Player 1 Canvas
 
 // Setting play board canvas and its context
 const canvas_pl1 = document.getElementById('board_pl1');
@@ -16,7 +16,7 @@ ctx_pl1.scale(BLOCK_SIZE_MULTI, BLOCK_SIZE_MULTI);
 ctxNext_pl1.scale(BLOCK_SIZE_MULTI, BLOCK_SIZE_MULTI);
 
 
-// Player 2 canvas set-up
+// Setting up Player 2 Canvas
 
 // Setting play board canvas and its context
 const canvas_pl2 = document.getElementById('board_pl2');
@@ -40,13 +40,15 @@ let   board_pl1 = new Board(ctx_pl1, ctxNext_pl1),
 let   board = [board_pl1, board_pl2],
       ctx = [ctx_pl1, ctx_pl2];
 
+// Initializing empty board matrices
 board[0].grid = board[0].getEmptyBoard();
 board[1].grid = board[1].getEmptyBoard();
 
+// Attaching an ID to both boards
 board[0].id = 1;
 board[1].id = 2;
 
-// Empty board gets painted with boxes
+// Drawing empty boards
 board.forEach((board) => {
    board.grid.forEach((row, y) => {
       row.forEach((value, x) => {
@@ -57,13 +59,12 @@ board.forEach((board) => {
     });
 })
 
+
 // Drawing navigation instructions on board
 // player 1
 drawNavigations(ctx[0], "a", "d", "w", "s", "e");
-drawNavigations(ctx[1], "left", "right", "up", "down", "space");
-
 //player 2
-
+drawNavigations(ctx[1], "left", "right", "up", "down", "space");
 
 function drawNavigations(ctx, left, right, rotate, softDrop, hardDrop){
    ctx.font = '1px Tahoma';
@@ -75,10 +76,6 @@ function drawNavigations(ctx, left, right, rotate, softDrop, hardDrop){
    ctx.fillText(`soft drop: "${softDrop}"`, .8, 12.5);
    ctx.fillText(`hard drop: "${hardDrop}"`, .8, 14);
 }
-
-// ctx[0].font = '1px Arial';
-// ctx[0].fillStyle = 'white';
-// ctx[0].fillText('left: "a", right: "d", rotate: "w", soft drop: "s", hard drop: "e"', 1.8, 4);
 
 // Starts new game
 let playBtn = document.querySelector("#play-btn");
@@ -93,6 +90,7 @@ playBtn.addEventListener('click', function () {
    // Remove focus from play button, so that space key does not start new game when game over
    this.blur();
 
+   // Attach Navigation event listener
    document.addEventListener('keydown', handleKeyDown);
 
    ctx.forEach((ctx) => {
@@ -174,7 +172,7 @@ function resetGame() {
    }
  }
 
-// Possible moves - attached to the key-code of the key
+// Possible moves - attached to the key-code of the KEY object in constants.js
 const moves = {
    [KEY_MP.LEFT_PL1]: p => ({...p, x: p.x - 1}),
    [KEY_MP.RIGHT_PL1]: p => ({...p, x: p.x + 1}),
@@ -234,7 +232,7 @@ let colored = [null, null];
 let blinkCall = [0, 0];
 let playerGameOver = [false, false]
 
-// Game Loop; pl stands for player - 0 for player1, 1 for player2
+// Game Loop; pl stands for player -> 0 for player1, 1 for player2
 function animate(timestamp = 0, pl) {
    // Update elapsed time.  
    time[pl].elapsed = timestamp - time[pl].start;
@@ -357,8 +355,17 @@ let names = document.querySelectorAll(".players-name");
 
 let defaultText = names[0].innerText;
 
-// Checking if names are entered
+
 names.forEach(name => {
+   // Selecting all text when clicking element
+   name.addEventListener("click", function () {
+         let range = document.createRange();
+         range.selectNodeContents(this);
+         let sel = window.getSelection();
+         sel.removeAllRanges();
+         sel.addRange(range);
+   })
+   // Changing text style when name is changed
    name.addEventListener("input", function () {
       name.classList.add("edited-name")
       if(names[0].innerText != defaultText && names[1].innerText != defaultText) {
